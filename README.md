@@ -47,7 +47,7 @@ $$
 
 ### 特征点提取，匹配与排序
 
-直接调用opencv的surf类实现。
+直接调用opencv的SURF类实现。
 ```cpp
 //灰度图转换  
 Mat image1, image2;
