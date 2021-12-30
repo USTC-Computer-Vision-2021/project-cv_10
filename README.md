@@ -74,7 +74,7 @@ sort(matchePoints.begin(), matchePoints.end()); //特征点排序
 
 ### 获得前景投影
 
-选择三个最有匹配的点对，使用仿射变换，将前景图片投影至背景。
+选择三个最优匹配的点对，使用仿射变换，将前景图片投影至背景。
 ```cpp
 //获取排在前N个的最优匹配特征点  
 vector<Point2f> imagePoints1, imagePoints2;
