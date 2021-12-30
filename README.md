@@ -117,9 +117,12 @@ for (int i = 0; i < image02.rows; i++)
 
 ### 演示1
 拼接前：
+
 ![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/21DFF84F394269C11DD7F020885A4461.jpg)
 ![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/936A7604A262B39DEE779D86BEC0DAEB.jpg)
+
 拼接后：
+
 ![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/output/35EE54060AC4C4F92FD7CA2BD2006B9C.jpg)
 
 ## 工程结构
