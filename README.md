@@ -140,7 +140,7 @@ for (int i = 0; i < image02.rows; i++)
 ```text
 .
 ├── code
-│   ├── opencv_match.cpp
+│   └── opencv_match.cpp
 │
 ├── input
 │   ├── input1-1.jpg
