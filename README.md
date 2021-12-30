@@ -45,7 +45,8 @@ $$
 
 ## 代码实现
 
-一，特征点提取，匹配与排序
+### 特征点提取，匹配与排序
+
 直接调用opencv的surf类实现。
 ```cpp
 //灰度图转换  
@@ -71,7 +72,8 @@ matcher.match(imageDesc1, imageDesc2, matchePoints, Mat());
 sort(matchePoints.begin(), matchePoints.end()); //特征点排序 
 ```
 
-二，获得前景投影
+### 获得前景投影
+
 选择三个最有匹配的点对，使用仿射变换，将前景图片投影至背景。
 ```cpp
 //获取排在前N个的最优匹配特征点  
@@ -93,7 +95,8 @@ imshow("仿射变换-SURF", imageTransform1);
 //imwrite("仿射变换-SURF.jpg", imageTransform1);
  ```
  
- 三，图像融合
+### 图像融合
+
  将前景投影叠加至背景。
  ```cpp
 for (int i = 0; i < image02.rows; i++)
