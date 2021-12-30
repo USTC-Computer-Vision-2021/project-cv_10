@@ -118,8 +118,8 @@ for (int i = 0; i < image02.rows; i++)
 ### 演示1
 拼接前：
 
-![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input1-1.jpg)
 ![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input1-2.jpg)
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input1-1.jpg)
 
 拼接后：
 
