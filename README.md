@@ -157,14 +157,9 @@ for (int i = 0; i < image02.rows; i++)
 在这里，建议写明依赖环境和库的具体版本号，如果是 python 可以建一个 requirements.txt，例如：
 
 ```
-opencv-python==3.4
-Flask==0.11.1
+opencv+contrib==3.4.13
 ```
 
 运行说明尽量列举清晰，例如：
-```
-pip install opencv-python
-python run.py --src_path xxx.png --dst_path yyy.png
-npm run make-es5 --silent
-```
+将图片输入路径修改为输入图片绝对路径，运行opencv_match.cpp，结果将输出至当前文件夹。
 
