@@ -45,84 +45,70 @@ $$
 
 ## 代码实现
 
-
+一，特征点提取，匹配与排序
+直接调用opencv的surf类实现。
 ```cpp
-	//灰度图转换  
-	Mat image1, image2;
-	cvtColor(image01, image1, CV_RGB2GRAY);
-	cvtColor(image02, image2, CV_RGB2GRAY);
+//灰度图转换  
+Mat image1, image2;
+cvtColor(image01, image1, CV_RGB2GRAY);
+cvtColor(image02, image2, CV_RGB2GRAY);
 
-	//提取特征点    
-	Ptr<Feature2D> f2d = xfeatures2d::SURF::create();	//SURF
-	vector<KeyPoint> keyPoint1, keyPoint2;
-	f2d->detect(image1, keyPoint1);
-	f2d->detect(image2, keyPoint2);
+//提取特征点    
+Ptr<Feature2D> f2d = xfeatures2d::SURF::create();//SURF
+vector<KeyPoint> keyPoint1, keyPoint2;
+f2d->detect(image1, keyPoint1);
+f2d->detect(image2, keyPoint2);
 
+//特征点描述，为下边的特征点匹配做准备    
+Mat imageDesc1, imageDesc2;
+f2d->compute(image1, keyPoint1, imageDesc1);
+f2d->compute(image2, keyPoint2, imageDesc2);
 
-	//特征点描述，为下边的特征点匹配做准备    
-	Mat imageDesc1, imageDesc2;
-	f2d->compute(image1, keyPoint1, imageDesc1);
-	f2d->compute(image2, keyPoint2, imageDesc2);
-
-	//获得匹配特征点，并提取最优配对     
-	FlannBasedMatcher matcher;
-	vector<DMatch> matchePoints;
-	matcher.match(imageDesc1, imageDesc2, matchePoints, Mat());
-	sort(matchePoints.begin(), matchePoints.end()); //特征点排序 
+//获得匹配特征点，并提取最优配对     
+FlannBasedMatcher matcher;
+vector<DMatch> matchePoints;
+matcher.match(imageDesc1, imageDesc2, matchePoints, Mat());
+sort(matchePoints.begin(), matchePoints.end()); //特征点排序 
 ```
 
+二，获得前景投影
+选择三个最有匹配的点对，使用仿射变换，将前景图片投影至背景。
 ```cpp
-	//获取排在前N个的最优匹配特征点  
-	vector<Point2f> imagePoints1, imagePoints2;
+//获取排在前N个的最优匹配特征点  
+vector<Point2f> imagePoints1, imagePoints2;
 
-	for (int i = 0; i < 3; i++)//挑选的特征点 仿射变换需要3个
-	{
-		imagePoints1.push_back(keyPoint1[matchePoints[i].queryIdx].pt);
-		imagePoints2.push_back(keyPoint2[matchePoints[i].trainIdx].pt);
-	}
+for (int i = 0; i < 3; i++)//挑选的特征点 仿射变换需要3个
+{
+	imagePoints1.push_back(keyPoint1[matchePoints[i].queryIdx].pt);
+	imagePoints2.push_back(keyPoint2[matchePoints[i].trainIdx].pt);
+}
 
-	//获取图像1到图像2的投影映射矩阵，尺寸为3*3 
-	Mat Trans = getAffineTransform(imagePoints1, imagePoints2);//getAffineTransform getPerspectiveTransform
-	
-	//图像配准  仿射变换
-	Mat imageTransform1;
-    warpAffine(image01, imageTransform1, Trans, Size(image02.cols, image02.rows));//warpAffine warpPerspective
-	imshow("仿射变换-SURF", imageTransform1);
-	//imwrite("仿射变换-SURF.jpg", imageTransform1);
+//获取图像1到图像2的投影映射矩阵，尺寸为3*3 
+Mat Trans = getAffineTransform(imagePoints1, imagePoints2);
+
+//图像配准  仿射变换
+Mat imageTransform1;
+warpAffine(image01, imageTransform1, Trans, Size(image02.cols, image02.rows));
+imshow("仿射变换-SURF", imageTransform1);
+//imwrite("仿射变换-SURF.jpg", imageTransform1);
  ```
  
+ 三，图像融合
+ 将前景投影叠加至背景。
  ```cpp
-    //背景与变换结果融合
-	for (int i = 0; i < image02.rows; i++)
+for (int i = 0; i < image02.rows; i++)
+{
+	for (int j = 0; j < image02.cols; j++)
 	{
-		for (int j = 0; j < image02.cols; j++)
+		if (imageTransform1.at<Vec3b>(i, j)[0]+ imageTransform1.at<Vec3b>(i, j)[1]+ imageTransform1.at<Vec3b>(i, j)[2]) 
 		{
-			if (imageTransform1.at<Vec3b>(i, j)[0]+ imageTransform1.at<Vec3b>(i, j)[1]+ imageTransform1.at<Vec3b>(i, j)[2]) 
-			{
-				image02.at<Vec3b>(i, j)[0] = imageTransform1.at<Vec3b>(i, j)[0];
-				image02.at<Vec3b>(i, j)[1] = imageTransform1.at<Vec3b>(i, j)[1];
-				image02.at<Vec3b>(i, j)[2] = imageTransform1.at<Vec3b>(i, j)[2];
-			}
+			image02.at<Vec3b>(i, j)[0] = imageTransform1.at<Vec3b>(i, j)[0];
+			image02.at<Vec3b>(i, j)[1] = imageTransform1.at<Vec3b>(i, j)[1];
+			image02.at<Vec3b>(i, j)[2] = imageTransform1.at<Vec3b>(i, j)[2];
 		}
 	}
+}
 ```
-
-尽量讲清楚自己的设计，以上分析的每个技术难点分别采用什么样的算法实现的，可以是自己写的（会有加分），也可以调包。如有参考别人的实现，虽不可耻，但是要自己理解和消化，可以摆上参考链接，也鼓励大家进行优化和改进。
-
-- 鼓励大家分拆功能，进行封装，减小耦合。每个子函数干的事情尽可能简单纯粹，方便复用和拓展，整个系统功能也简洁容易理解。
-- 尽量规范地命名和注释，使代码容易理解，可以自己参考网上教程。
-
-插入算法的伪代码或子函数代码等，能更清晰地说明自己的设计，其中，可以用 markdown 中的代码高亮插入，比如：
-
-```cpp
-data = ["one", "two", "three"]
-for idx, val in enumerate(data):
-    print(f'{idx}:{val}')
-
-def add_number(a, b):
-    return a + b
-```
-
 
 ## 效果展示
 
