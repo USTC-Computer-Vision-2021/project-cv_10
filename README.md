@@ -118,25 +118,38 @@ for (int i = 0; i < image02.rows; i++)
 ### 演示1
 拼接前：
 
-![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/21DFF84F394269C11DD7F020885A4461.jpg)
-![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/936A7604A262B39DEE779D86BEC0DAEB.jpg)
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input1-1.jpg)
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input1-2.jpg)
 
 拼接后：
 
-![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/output/35EE54060AC4C4F92FD7CA2BD2006B9C.jpg)
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/output/output1.jpg)
+
+### 演示2
+拼接前：
+
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input2-2.png)
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/input2-1.png)
+
+拼接后：
+
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/output/output2.jpg)
 
 ## 工程结构
 
 ```text
 .
 ├── code
-│   ├── run.py
-│   └── utils.py
+│   ├── opencv_match.cpp
+│
 ├── input
-│   ├── bar.png
-│   └── foo.png
+│   ├── input1-1.jpg
+│   ├── input1-2.jpg
+│   ├── input2-1.png
+│   └── input2-2.png
 └── output
-    └── result.png
+    ├── output1.jpg
+    └── output2.jpg
 ```
 
 ## 运行说明
