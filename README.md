@@ -115,11 +115,12 @@ for (int i = 0; i < image02.rows; i++)
 
 ## 效果展示
 
-在这儿可以展示自己基于素材实现的效果，可以贴图，如果是视频，建议转成 Gif 插入，例如：
-
-![AR 效果展示](demo/ar.gif)
-
-如果自己实现了好玩儿的 feature，比如有意思的交互式编辑等，可以想办法展示和凸显出来。
+### 演示1
+拼接前：
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/21DFF84F394269C11DD7F020885A4461.jpg)
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/input/936A7604A262B39DEE779D86BEC0DAEB.jpg)
+拼接后：
+![image](https://github.com/USTC-Computer-Vision-2021/project-cv_10/blob/main/output/35EE54060AC4C4F92FD7CA2BD2006B9C.jpg)
 
 ## 工程结构
 
